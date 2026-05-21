@@ -12,6 +12,7 @@ import AlumniDashboard from "./pages/AlumniDashboard";
 import StudentRoute from "./components/StudentRoute";
 import AlumniRoute from "./components/AlumniRoute";
 import LandingPage from "./pages/LandingPage";
+import AlumniDirectory from "./pages/AlumniDirectory";
 function App() {
 
   return (
@@ -81,6 +82,11 @@ function App() {
         <Route
           path="/register/alumni"
           element={<AlumniRegister />}
+        />
+
+        <Route
+          path="/alumni-directory"
+          element={<AlumniDirectory />}
         />
       </Routes>
     </>

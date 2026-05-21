@@ -62,13 +62,7 @@ function LandingPage() {
                 {token && (
 
                   <Link
-                    to={
-                      role === "admin"
-                        ? "/admin"
-                        : role === "student"
-                        ? "/student"
-                        : "/alumni"
-                    }
+                    to="/alumni-directory"
                     className="hover:text-blue-600 font-semibold"
                   >
                     Alumni Directory
@@ -107,20 +101,20 @@ function LandingPage() {
                         role === "admin"
                           ? "/admin"
                           : role === "student"
-                          ? "/student"
-                          : "/alumni"
+                            ? "/student"
+                            : "/alumni"
                       }
                       className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
                     >
                       My Profile
                     </Link>
 
-                    <button
+                    {/* <button
                       onClick={logout}
                       className="border border-red-500 text-red-500 px-5 py-2 rounded-xl hover:bg-red-50 transition"
                     >
                       Logout
-                    </button>
+                    </button> */}
                   </>
 
                 )}
@@ -162,8 +156,8 @@ function LandingPage() {
                     role === "admin"
                       ? "/admin"
                       : role === "student"
-                      ? "/student"
-                      : "/alumni"
+                        ? "/student"
+                        : "/alumni"
                   }
                 >
                   Alumni Directory
@@ -197,8 +191,8 @@ function LandingPage() {
                       role === "admin"
                         ? "/admin"
                         : role === "student"
-                        ? "/student"
-                        : "/alumni"
+                          ? "/student"
+                          : "/alumni"
                     }
                     className="bg-blue-600 text-white px-5 py-3 rounded-xl text-center"
                   >

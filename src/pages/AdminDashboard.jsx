@@ -95,6 +95,7 @@ function AdminDashboard() {
           <h2 className="text-4xl font-bold text-green-600">
 
             {
+              Array.isArray(users) &&
               users.filter(
                 (u) => u.role === "alumni"
               ).length
@@ -116,6 +117,7 @@ function AdminDashboard() {
           <h2 className="text-4xl font-bold text-purple-600">
 
             {
+              Array.isArray(users) &&
               users.filter(
                 (u) => u.role === "student"
               ).length
@@ -172,37 +174,72 @@ function AdminDashboard() {
 
             <tbody>
 
-              {users.length > 0 ? (
-
-                users.map((u) => (
+              {users
+                .filter((u) => u.role === "alumni")
+                .map((u) => (
 
                   <tr
                     key={u.id}
                     className="border-t hover:bg-gray-50 transition"
                   >
 
+                    {/* Name */}
                     <td className="p-4 whitespace-nowrap">
                       {u.name}
                     </td>
 
-                    <td className="p-4 whitespace-nowrap text-sm md:text-base">
+                    {/* Email */}
+                    <td className="p-4 whitespace-nowrap">
                       {u.email}
                     </td>
 
-                    <td className="p-4 capitalize whitespace-nowrap">
+                    {/* Role */}
+                    <td className="p-4">
 
-                      <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+                      <select
+                        value={u.role}
+                        onChange={(e) =>
+                          handleRoleChange(
+                            u.id,
+                            e.target.value
+                          )
+                        }
+                        className="border rounded-lg px-3 py-2"
+                      >
 
-                        {u.role}
+                        <option value="alumni">
+                          Alumni
+                        </option>
 
-                      </span>
+                        <option value="student">
+                          Student
+                        </option>
+
+                      </select>
 
                     </td>
 
-                    <td className="p-4 whitespace-nowrap">
+                    {/* Verification */}
+                    <td className="p-4">
 
                       <button
-                        onClick={() => deleteUser(u.id)}
+                        onClick={() =>
+                          handleVerify(u.id)
+                        }
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+                      >
+                        Verify
+                      </button>
+
+                    </td>
+
+                    {/* Delete */}
+                    <td className="p-4">
+
+                      <button
+                        onClick={() =>
+                          deleteUser(u.id)
+                        }
                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
                       >
                         Delete
@@ -212,24 +249,7 @@ function AdminDashboard() {
 
                   </tr>
 
-                ))
-
-              ) : (
-
-                <tr>
-
-                  <td
-                    colSpan="4"
-                    className="text-center p-8 text-gray-500"
-                  >
-
-                    No users found
-
-                  </td>
-
-                </tr>
-
-              )}
+                ))}
 
             </tbody>
 
