@@ -1,6 +1,8 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 
 function Login() {
 
@@ -9,6 +11,8 @@ function Login() {
     password: "",
     role: "admin",
   });
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
 
@@ -101,19 +105,46 @@ function Login() {
 
   return (
 
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+  <div className="relative min-h-screen">
 
-      <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-md mx-4">
+    {/* Background Image */}
+    <div
+      className="absolute inset-0 bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('/tezu-home.jpg')",
+      }}
+    />
 
-        <h2 className="text-2xl font-bold text-center mb-6">
+    {/* Dark Blur Overlay */}
+    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+
+    {/* Login Container */}
+    <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
+
+      {/* Login Card */}
+      <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl w-full max-w-md relative">
+
+        {/* Close Button */}
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-5 right-5 text-gray-500 hover:text-red-500 transition"
+        >
+          <X size={28} />
+        </button>
+
+        {/* Heading */}
+        <h2 className="text-3xl font-bold text-center mb-8">
+
           Login
+
         </h2>
 
         {/* Email */}
         <input
           type="email"
           placeholder="Email"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={form.email}
           onChange={(e) =>
             setForm({
@@ -127,7 +158,7 @@ function Login() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={form.password}
           onChange={(e) =>
             setForm({
@@ -137,7 +168,8 @@ function Login() {
           }
         />
 
-        <div className="text-right">
+        {/* Forgot Password */}
+        <div className="text-right mb-4">
 
           <Link
             to="/forgot-password"
@@ -150,7 +182,7 @@ function Login() {
 
         {/* Role */}
         <select
-          className="w-full border p-3 rounded mb-6"
+          className="w-full border p-3 rounded-xl mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={form.role}
           onChange={(e) =>
             setForm({
@@ -161,7 +193,7 @@ function Login() {
         >
 
           <option value="admin">
-            admin
+            Admin
           </option>
 
           <option value="student">
@@ -179,14 +211,14 @@ function Login() {
 
           <button
             onClick={handleLogin}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-semibold transition"
           >
             Login
           </button>
 
           <button
             onClick={handleRegister}
-            className="w-full bg-gray-700 hover:bg-gray-800 text-white p-3 rounded"
+            className="w-full bg-gray-800 hover:bg-gray-900 text-white p-3 rounded-xl font-semibold transition"
           >
             Register
           </button>
@@ -196,7 +228,9 @@ function Login() {
       </div>
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Login;

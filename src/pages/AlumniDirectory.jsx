@@ -61,6 +61,32 @@ function AlumniDirectory() {
 
   }, []);
 
+  // Verify Alumni
+  const handleVerify = async (id) => {
+
+    try {
+
+      await API.put(
+        `/admin/approve/${id}`
+      );
+
+      toast.success(
+        "Alumni verified successfully"
+      );
+
+      // Refresh alumni list
+      fetchAlumni();
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(
+        "Verification failed"
+      );
+    }
+  };
+
   return (
 
     <div className="min-h-screen bg-gray-100 pt-32 px-4 md:px-10">
@@ -258,38 +284,20 @@ function AlumniDirectory() {
 
             </p>
 
-            {/* ADMIN CONTROLS */}
-            {localStorage.getItem("role") === "admin" && (
+            <p
+              className={`mt-3 font-semibold ${a.is_approved
+                  ? "text-green-600"
+                  : "text-red-500"
+                }`}
+            >
 
-              <div className="flex flex-wrap gap-3 mt-5">
+              {a.is_approved
+                ? "Verified"
+                : "Not Verified"}
 
-                {/* Verify */}
-                <button
-                  onClick={() => handleVerify(a.id)}
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition"
-                >
-                  Verify
-                </button>
+            </p>
 
-                {/* Edit */}
-                <button
-                  onClick={() => handleEdit(a)}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-xl transition"
-                >
-                  Edit
-                </button>
-
-                {/* Delete */}
-                <button
-                  onClick={() => handleDelete(a.id)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl transition"
-                >
-                  Delete
-                </button>
-
-              </div>
-
-            )}
+          
 
           </div>
 

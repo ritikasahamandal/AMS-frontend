@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from "react";
 import API from "../api/axios";
 import Layout from "../components/Layout";
+import { toast } from "react-toastify";
 
 function AdminDashboard() {
 
   const [users, setUsers] = useState([]);
 
+  // Fetch Users
   const fetchUsers = async () => {
 
     try {
 
-      const res = await API.get("/admin/users");
+      const res = await API.get(
+        "/admin/users"
+      );
 
-      setUsers(res.data);
+      setUsers(
+        Array.isArray(res.data)
+          ? res.data
+          : []
+      );
 
     } catch (error) {
 
       console.error(error);
 
+      toast.error(
+        "Failed to load users"
+      );
     }
   };
 
+  // Delete User
   const deleteUser = async (id) => {
 
     try {
 
-      await API.delete(`/admin/user/${id}`);
+      await API.delete(
+        `/admin/user/${id}`
+      );
+
+      toast.success(
+        "User deleted"
+      );
 
       fetchUsers();
 
@@ -33,6 +51,65 @@ function AdminDashboard() {
 
       console.error(error);
 
+      toast.error(
+        "Delete failed"
+      );
+    }
+  };
+
+  // Verify Alumni
+  const handleVerify = async (id) => {
+
+    try {
+
+      await API.put(
+        `/admin/approve/${id}`
+      );
+
+      toast.success(
+        "Alumni verified successfully"
+      );
+
+      fetchUsers();
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(
+        "Verification failed"
+      );
+    }
+  };
+
+  // Change Role
+  const handleRoleChange = async (
+    id,
+    newRole
+  ) => {
+
+    try {
+
+      await API.put(
+        `/admin/role/${id}`,
+        {
+          role: newRole
+        }
+      );
+
+      toast.success(
+        "Role updated successfully"
+      );
+
+      fetchUsers();
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(
+        "Failed to update role"
+      );
     }
   };
 
@@ -46,28 +123,28 @@ function AdminDashboard() {
 
     <Layout>
 
-      {/* Page Heading */}
-      <div className="mb-8">
+      {/* Heading */}
+      <div className="mb-6 md:mb-8">
 
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
 
           Admin Dashboard
 
         </h1>
 
-        <p className="text-gray-600 mt-2">
+        <p className="text-sm sm:text-base text-gray-600 mt-2">
 
-          Manage students, alumni and platform users.
+          Manage alumni and platform users.
 
         </p>
 
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 mb-8">
 
         {/* Total Users */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+        <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
 
           <p className="text-gray-500 text-sm mb-2">
 
@@ -75,7 +152,7 @@ function AdminDashboard() {
 
           </p>
 
-          <h2 className="text-4xl font-bold text-blue-600">
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-600">
 
             {users.length}
 
@@ -84,7 +161,7 @@ function AdminDashboard() {
         </div>
 
         {/* Alumni */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+        <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
 
           <p className="text-gray-500 text-sm mb-2">
 
@@ -92,12 +169,12 @@ function AdminDashboard() {
 
           </p>
 
-          <h2 className="text-4xl font-bold text-green-600">
+          <h2 className="text-3xl md:text-4xl font-bold text-green-600">
 
             {
-              Array.isArray(users) &&
               users.filter(
-                (u) => u.role === "alumni"
+                (u) =>
+                  u.role === "alumni"
               ).length
             }
 
@@ -106,7 +183,7 @@ function AdminDashboard() {
         </div>
 
         {/* Students */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+        <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
 
           <p className="text-gray-500 text-sm mb-2">
 
@@ -114,12 +191,12 @@ function AdminDashboard() {
 
           </p>
 
-          <h2 className="text-4xl font-bold text-purple-600">
+          <h2 className="text-3xl md:text-4xl font-bold text-purple-600">
 
             {
-              Array.isArray(users) &&
               users.filter(
-                (u) => u.role === "student"
+                (u) =>
+                  u.role === "student"
               ).length
             }
 
@@ -129,43 +206,49 @@ function AdminDashboard() {
 
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg-white rounded-2xl shadow-sm overflow-hidden">
 
-        {/* Table Header */}
         <div className="p-5 border-b">
 
           <h2 className="text-2xl font-semibold">
 
-            Users
+            Alumni Users
 
           </h2>
 
         </div>
 
-        {/* Responsive Table */}
         <div className="overflow-x-auto">
 
           <table className="min-w-full">
 
             <thead>
 
-              <tr className="bg-blue-100 text-left text-sm md:text-base">
+              <tr className="bg-blue-100 text-left">
 
                 <th className="p-4 whitespace-nowrap">
+                  ID
+                </th>
+
+                <th className="p-4">
                   Name
                 </th>
 
-                <th className="p-4 whitespace-nowrap">
+                <th className="p-4">
                   Email
                 </th>
 
-                <th className="p-4 whitespace-nowrap">
+                <th className="p-4">
                   Role
                 </th>
 
-                <th className="p-4 whitespace-nowrap">
-                  Action
+                <th className="p-4">
+                  Verification
+                </th>
+
+                <th className="p-4">
+                  Delete
                 </th>
 
               </tr>
@@ -175,21 +258,29 @@ function AdminDashboard() {
             <tbody>
 
               {users
-                .filter((u) => u.role === "alumni")
+                .filter(
+                  (u) =>
+                    u.role === "alumni"
+                )
                 .map((u) => (
 
                   <tr
                     key={u.id}
-                    className="border-t hover:bg-gray-50 transition"
+                    className="border-t hover:bg-gray-50"
                   >
+                    <td className="p-4 whitespace-nowrap font-semibold text-blue-600">
+
+                      ALM-{u.id}
+
+                    </td>
 
                     {/* Name */}
-                    <td className="p-4 whitespace-nowrap">
+                    <td className="p-4">
                       {u.name}
                     </td>
 
                     {/* Email */}
-                    <td className="p-4 whitespace-nowrap">
+                    <td className="p-4">
                       {u.email}
                     </td>
 
@@ -219,17 +310,31 @@ function AdminDashboard() {
 
                     </td>
 
-                    {/* Verification */}
+                    {/* Verify */}
                     <td className="p-4">
 
-                      <button
-                        onClick={() =>
-                          handleVerify(u.id)
-                        }
-                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
-                      >
-                        Verify
-                      </button>
+                      {u.is_approved ? (
+
+                        <span className="text-green-600 font-semibold">
+
+                          ✅ Verified
+
+                        </span>
+
+                      ) : (
+
+                        <button
+                          onClick={() =>
+                            handleVerify(
+                              u.id
+                            )
+                          }
+                          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                        >
+                          Verify
+                        </button>
+
+                      )}
 
                     </td>
 
@@ -238,9 +343,11 @@ function AdminDashboard() {
 
                       <button
                         onClick={() =>
-                          deleteUser(u.id)
+                          deleteUser(
+                            u.id
+                          )
                         }
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
                       >
                         Delete
                       </button>
@@ -259,8 +366,124 @@ function AdminDashboard() {
 
       </div>
 
-    </Layout>
+      {/* Mobile Cards */}
+      <div className="lg:hidden space-y-5">
 
+        {users
+          .filter(
+            (u) =>
+              u.role === "alumni"
+          )
+          .map((u) => (
+
+            <div
+              key={u.id}
+              className="bg-white rounded-2xl shadow-sm p-5"
+            >
+
+              {/* Name */}
+              <h2 className="text-xl font-bold mb-2 break-words">
+
+                {u.name}
+
+              </h2>
+
+              {/* Email */}
+              <p className="text-gray-600 text-sm break-words mb-4">
+
+                {u.email}
+
+              </p>
+
+              {/* Role */}
+              <div className="mb-4">
+
+                <p className="text-gray-500 text-sm mb-2">
+
+                  Role
+
+                </p>
+
+                <select
+                  value={u.role}
+
+                  disabled={u.is_approved}
+
+                  onChange={(e) =>
+                    handleRoleChange(
+                      u.id,
+                      e.target.value
+                    )
+                  }
+
+                  className={`border rounded-lg px-3 py-2
+
+    ${u.is_approved
+                      ? "bg-gray-200 cursor-not-allowed"
+                      : "bg-white"
+                    }
+  `}
+                >
+
+                  <option value="alumni">
+                    Alumni
+                  </option>
+
+                  <option value="student">
+                    Student
+                  </option>
+
+                </select>
+
+              </div>
+
+              {/* Verification */}
+              <div className="mb-5">
+
+                {u.is_approved ? (
+
+                  <span className="text-green-600 font-semibold">
+
+                    ✅ Verified
+
+                  </span>
+
+                ) : (
+
+                  <button
+                    onClick={() =>
+                      handleVerify(
+                        u.id
+                      )
+                    }
+                    className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl"
+                  >
+                    Verify
+                  </button>
+
+                )}
+
+              </div>
+
+              {/* Delete */}
+              <button
+                onClick={() =>
+                  deleteUser(
+                    u.id
+                  )
+                }
+                className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          ))}
+
+      </div>
+
+    </Layout>
   );
 }
 
