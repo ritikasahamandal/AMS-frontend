@@ -90,11 +90,10 @@ function AlumniDashboard() {
             onClick={() =>
               setActiveTab("profile")
             }
-            className={`w-full text-left p-4 rounded-xl transition ${
-              activeTab === "profile"
-                ? "bg-white text-blue-900 font-semibold"
-                : "hover:bg-blue-800"
-            }`}
+            className={`w-full text-left p-4 rounded-xl transition ${activeTab === "profile"
+              ? "bg-white text-blue-900 font-semibold"
+              : "hover:bg-blue-800"
+              }`}
           >
             👤 My Profile
           </button>
@@ -104,11 +103,10 @@ function AlumniDashboard() {
             onClick={() =>
               setActiveTab("directory")
             }
-            className={`w-full text-left p-4 rounded-xl transition ${
-              activeTab === "directory"
-                ? "bg-white text-blue-900 font-semibold"
-                : "hover:bg-blue-800"
-            }`}
+            className={`w-full text-left p-4 rounded-xl transition ${activeTab === "directory"
+              ? "bg-white text-blue-900 font-semibold"
+              : "hover:bg-blue-800"
+              }`}
           >
             👥 Alumni Directory
           </button>
@@ -186,22 +184,24 @@ function AlumniDashboard() {
                   </div>
 
                   <div>
+
+                    <p className="text-gray-500">
+                      Course
+                    </p>
+
+                    <p className="text-xl font-semibold">
+                      {profile.course_name}
+                    </p>
+
+                  </div>
+
+                  <div>
                     <p className="text-gray-500">
                       Graduation Year
                     </p>
 
                     <p className="text-lg md:text-xl font-semibold">
                       {profile.graduation_year}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">
-                      Department
-                    </p>
-
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.department}
                     </p>
                   </div>
 
@@ -291,6 +291,12 @@ function AlumniDashboard() {
 
                   </h3>
 
+                  <p className="text-blue-600 font-medium mb-2">
+
+                    {a.course_name}
+
+                  </p>
+
                   {/* Details */}
                   <p className="text-gray-600 mb-1 break-words">
                     {a.company}
@@ -306,7 +312,7 @@ function AlumniDashboard() {
 
                   <p className="text-gray-600">
 
-                    Batch:
+                    Graduation Year:
                     {" "}
                     {a.graduation_year}
 
@@ -315,6 +321,28 @@ function AlumniDashboard() {
                 </div>
 
               ))}
+
+              <div className="mt-3">
+
+                {a.is_approved ? (
+
+                  <span className="text-green-600 font-semibold">
+
+                    ✅ Verified
+
+                  </span>
+
+                ) : (
+
+                  <span className="text-yellow-600 font-semibold">
+
+                    ⏳ Pending Verification
+
+                  </span>
+
+                )}
+
+              </div>
 
             </div>
 

@@ -113,7 +113,7 @@ function Layout({ children }) {
               Alumni Directory
             </Link>
 
-            {/* Search Alumni */}
+            {/* Search Alumni
             <Link
               to="/alumni-directory"
               onClick={() =>
@@ -121,9 +121,7 @@ function Layout({ children }) {
               }
               className="hover:bg-blue-800 px-4 py-3 rounded-xl transition"
             >
-              Search Alumni
-            </Link>
-
+            
             {/* Send Email */}
             <Link
               to="/send-email"

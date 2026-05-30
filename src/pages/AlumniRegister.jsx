@@ -1,21 +1,28 @@
 import { useState } from "react";
+
 import API from "../api/axios";
+
 import { toast } from "react-toastify";
 
 function AlumniRegister() {
 
   const [form, setForm] = useState({
+
     name: "",
     email: "",
     password: "",
 
     role: "student",
 
+
+    course_name: "",
     graduation_year: "",
-    department: "",
+
+
     company: "",
     job_title: "",
     location: "",
+
   });
 
   const handleRegister = async () => {
@@ -46,20 +53,25 @@ function AlumniRegister() {
 
   return (
 
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 py-10">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
 
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+      <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl w-full max-w-xl">
 
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Registration
+        {/* Heading */}
+        <h2 className="text-3xl font-bold text-center mb-8">
+
+          Alumni Registration
+
         </h2>
 
         {/* Name */}
         <input
           type="text"
           placeholder="Full Name"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-4"
+
           value={form.name}
+
           onChange={(e) =>
             setForm({
               ...form,
@@ -72,8 +84,10 @@ function AlumniRegister() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-4"
+
           value={form.email}
+
           onChange={(e) =>
             setForm({
               ...form,
@@ -86,8 +100,10 @@ function AlumniRegister() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-4"
+
           value={form.password}
+
           onChange={(e) =>
             setForm({
               ...form,
@@ -98,8 +114,10 @@ function AlumniRegister() {
 
         {/* Role */}
         <select
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded-xl mb-6"
+
           value={form.role}
+
           onChange={(e) =>
             setForm({
               ...form,
@@ -123,37 +141,49 @@ function AlumniRegister() {
 
           <>
 
+            {/* Course Name */}
+            <input
+              type="text"
+              placeholder="Course Name (BTech CSE, MBA...)"
+              className="w-full border p-3 rounded-xl mb-4"
+
+              value={form.course_name}
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  course_name: e.target.value,
+                })
+              }
+            />
+
+
+
+            {/* Graduation Year */}
             <input
               type="number"
               placeholder="Graduation Year"
-              className="w-full border p-3 rounded mb-4"
+              className="w-full border p-3 rounded-xl mb-4"
+
               value={form.graduation_year}
+
               onChange={(e) =>
                 setForm({
                   ...form,
-                  graduation_year: e.target.value,
+                  graduation_year:
+                    e.target.value,
                 })
               }
             />
 
-            <input
-              type="text"
-              placeholder="Department"
-              className="w-full border p-3 rounded mb-4"
-              value={form.department}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  department: e.target.value,
-                })
-              }
-            />
-
+            {/* Company */}
             <input
               type="text"
               placeholder="Company"
-              className="w-full border p-3 rounded mb-4"
+              className="w-full border p-3 rounded-xl mb-4"
+
               value={form.company}
+
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -162,11 +192,14 @@ function AlumniRegister() {
               }
             />
 
+            {/* Job Title */}
             <input
               type="text"
               placeholder="Job Title"
-              className="w-full border p-3 rounded mb-4"
+              className="w-full border p-3 rounded-xl mb-4"
+
               value={form.job_title}
+
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -175,11 +208,14 @@ function AlumniRegister() {
               }
             />
 
+            {/* Location */}
             <input
               type="text"
               placeholder="Location"
-              className="w-full border p-3 rounded mb-4"
+              className="w-full border p-3 rounded-xl mb-6"
+
               value={form.location}
+
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -195,20 +231,20 @@ function AlumniRegister() {
         {/* Register Button */}
         <button
           onClick={handleRegister}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-semibold transition"
         >
           Register
         </button>
 
         {/* Login Link */}
-        <p className="text-center mt-4 text-sm">
+        <p className="text-center mt-5 text-sm text-gray-600">
 
           Already have an account?
 
           <span
-            className="text-blue-600 cursor-pointer ml-1"
+            className="text-blue-600 cursor-pointer ml-1 hover:underline"
             onClick={() =>
-              window.location.href = "/"
+              window.location.href = "/login"
             }
           >
             Login

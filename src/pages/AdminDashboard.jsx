@@ -6,6 +6,51 @@ import { toast } from "react-toastify";
 function AdminDashboard() {
 
   const [users, setUsers] = useState([]);
+  const [filters, setFilters] = useState({
+    name: "",
+    company: "",
+    course_name: "",
+    graduation_year: "",
+  });
+
+  const handleReset = () => {
+
+    setFilters({
+      name: "",
+      company: "",
+      course_name: "",
+      graduation_year: "",
+    });
+
+    fetchUsers();
+  };
+
+  const handleSearch = async () => {
+    try {
+
+      const query =
+        new URLSearchParams(
+          Object.fromEntries(
+            Object.entries(filters).filter(
+              ([_, value]) =>
+                value !== ""
+            )
+          )
+        ).toString();
+
+      const res = await API.get(
+        `/alumni/search?${query}`
+      );
+
+      setUsers(res.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error("Search failed");
+    }
+  };
 
   // Fetch Users
   const fetchUsers = async () => {
@@ -206,6 +251,84 @@ function AdminDashboard() {
 
       </div>
 
+      <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+
+        <h2 className="text-xl font-bold mb-4">
+          Search Alumni
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+          <input
+            type="text"
+            placeholder="Name"
+            className="border p-3 rounded-lg"
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                name: e.target.value,
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Company"
+            className="border p-3 rounded-lg"
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                company: e.target.value,
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Course Name"
+            className="border p-3 rounded-lg"
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                course_name: e.target.value,
+              })
+            }
+          />
+
+          <input
+            type="number"
+            placeholder="Graduation Year"
+            className="border p-3 rounded-lg"
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                graduation_year: e.target.value,
+              })
+            }
+          />
+
+        </div>
+
+        <div className="flex gap-3 mt-4">
+
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 text-white px-5 py-2 rounded-lg"
+          >
+            Search
+          </button>
+
+          <button
+            onClick={handleReset}
+            className="bg-gray-500 text-white px-5 py-2 rounded-lg"
+          >
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
       {/* Desktop Table */}
       <div className="hidden lg:block bg-white rounded-2xl shadow-sm overflow-hidden">
 
@@ -258,10 +381,6 @@ function AdminDashboard() {
             <tbody>
 
               {users
-                .filter(
-                  (u) =>
-                    u.role === "alumni"
-                )
                 .map((u) => (
 
                   <tr
@@ -370,10 +489,6 @@ function AdminDashboard() {
       <div className="lg:hidden space-y-5">
 
         {users
-          .filter(
-            (u) =>
-              u.role === "alumni"
-          )
           .map((u) => (
 
             <div

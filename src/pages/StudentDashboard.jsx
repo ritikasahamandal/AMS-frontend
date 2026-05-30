@@ -9,8 +9,8 @@ function StudentDashboard() {
   const [filters, setFilters] = useState({
     name: "",
     company: "",
-    year: "",
-    department: "",
+    course_name: "",
+    graduation_year: "",
   });
 
   // Fetch all alumni
@@ -169,6 +169,17 @@ function StudentDashboard() {
                 })
               }
             />
+            <input
+              type="text"
+              placeholder="Course Name"
+              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  course_name: e.target.value,
+                })
+              }
+            />
 
             <input
               type="number"
@@ -177,22 +188,11 @@ function StudentDashboard() {
               onChange={(e) =>
                 setFilters({
                   ...filters,
-                  year: e.target.value,
+                  graduation_year: e.target.value,
                 })
               }
             />
 
-            <input
-              type="text"
-              placeholder="Department"
-              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  department: e.target.value,
-                })
-              }
-            />
 
           </div>
 
@@ -238,6 +238,9 @@ function StudentDashboard() {
                   {a.name}
 
                 </h4>
+                <p className="text-blue-600 font-medium mb-2 break-words">
+                  {a.course_name}
+                </p>
 
                 {/* Details */}
                 <p className="text-gray-600 mb-1 break-words">
@@ -254,7 +257,7 @@ function StudentDashboard() {
 
                 <p className="text-gray-600">
 
-                  Batch:
+                  Graduation Year:
                   {" "}
                   {a.graduation_year}
 
@@ -263,6 +266,23 @@ function StudentDashboard() {
               </div>
 
             ))}
+            <div className="mt-3">
+
+              {a.is_approved ? (
+
+                <span className="text-green-600 font-semibold">
+                  ✅ Verified
+                </span>
+
+              ) : (
+
+                <span className="text-yellow-600 font-semibold">
+                  ⏳ Pending Verification
+                </span>
+
+              )}
+
+            </div>
 
           </div>
 

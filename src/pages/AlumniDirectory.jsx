@@ -10,8 +10,8 @@ function AlumniDirectory() {
   const [filters, setFilters] = useState({
     name: "",
     company: "",
-    department: "",
-    year: "",
+    course_name: "",
+    graduation_year: "",
   });
 
   // Fetch Alumni
@@ -35,25 +35,29 @@ function AlumniDirectory() {
   // Search Alumni
   const handleSearch = async () => {
 
-    try {
+  try {
 
-      const query =
-        new URLSearchParams(filters).toString();
+    const query =
+      new URLSearchParams(filters).toString();
 
-      const res = await API.get(
-        `/alumni/search?${query}`
-      );
+    const response = await API.get(
+      `/alumni/search?${query}`
+    );
 
-      setAlumni(res.data);
+    setAlumni(response.data);
 
-    } catch (error) {
+  } catch (error) {
 
-      console.error(error);
+    console.error(
+      "SEARCH ERROR =>",
+      error
+    );
 
-      toast.error("Search failed");
-
-    }
-  };
+    toast.error(
+      "Search failed"
+    );
+  }
+};
 
   useEffect(() => {
 
@@ -107,7 +111,7 @@ function AlumniDirectory() {
             </Link>
 
             {/* Navigation */}
-            <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex flex-wrap items-center justify-end gap-2 md:gap-6 text-sm md:text-base">
 
               {/* Home */}
               <Link
@@ -202,12 +206,12 @@ function AlumniDirectory() {
 
           <input
             type="text"
-            placeholder="Department"
+            placeholder="Course Name"
             className="border p-3 rounded-xl"
             onChange={(e) =>
               setFilters({
                 ...filters,
-                department: e.target.value,
+                course_name: e.target.value,
               })
             }
           />
@@ -219,7 +223,7 @@ function AlumniDirectory() {
             onChange={(e) =>
               setFilters({
                 ...filters,
-                year: e.target.value,
+                graduation_year: e.target.value,
               })
             }
           />
@@ -236,7 +240,7 @@ function AlumniDirectory() {
       </div>
 
       {/* Alumni Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
         {alumni.map((a) => (
 
@@ -268,8 +272,8 @@ function AlumniDirectory() {
               {a.job_title}
             </p>
 
-            <p className="text-gray-600 mb-1 break-words">
-              {a.department}
+            <p className="text-blue-600 font-medium mb-1 break-words">
+              {a.course_name}
             </p>
 
             <p className="text-gray-600 mb-1 break-words">
@@ -278,16 +282,16 @@ function AlumniDirectory() {
 
             <p className="text-gray-600 mb-4">
 
-              Batch:
+              Graduation_year:
               {" "}
               {a.graduation_year}
 
             </p>
 
-            <p
+            {/* <p
               className={`mt-3 font-semibold ${a.is_approved
-                  ? "text-green-600"
-                  : "text-red-500"
+                ? "text-green-600"
+                : "text-red-500"
                 }`}
             >
 
@@ -295,11 +299,28 @@ function AlumniDirectory() {
                 ? "Verified"
                 : "Not Verified"}
 
-            </p>
+            </p> */}
+            <div className="mt-4">
 
-          
+              {a.is_approved ? (
+
+                <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                  ✅ Verified
+                </span>
+
+              ) : (
+
+                <span className="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">
+                  ⏳ Pending Verification
+                </span>
+
+              )}
+
+            </div>
+
 
           </div>
+
 
         ))}
 
