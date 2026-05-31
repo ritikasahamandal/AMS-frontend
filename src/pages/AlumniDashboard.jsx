@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { toast } from "react-toastify";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 function AlumniDashboard() {
 
   const [activeTab, setActiveTab] = useState("profile");
 
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState({});
 
   const [alumni, setAlumni] = useState([]);
 
@@ -15,9 +19,9 @@ function AlumniDashboard() {
 
     try {
 
-      const res = await API.get(
-        "/alumni/me"
-      );
+      const res = await API.get("/alumni/me");
+
+      console.log("PROFILE RESPONSE =>", res.data);
 
       setProfile(res.data);
 
@@ -98,7 +102,7 @@ function AlumniDashboard() {
             👤 My Profile
           </button>
 
-          {/* Alumni Directory */}
+          {/* Alumni Directory
           <button
             onClick={() =>
               setActiveTab("directory")
@@ -109,6 +113,15 @@ function AlumniDashboard() {
               }`}
           >
             👥 Alumni Directory
+          </button> */}
+          {/* home page button */}
+          <button
+            onClick={() => {
+              window.location.href = "/";
+            }}
+            className="w-full text-left p-4 rounded-xl hover:bg-blue-800 transition"
+          >
+            🏠 Home
           </button>
 
         </div>
@@ -126,7 +139,7 @@ function AlumniDashboard() {
       {/* Main Content */}
       <div className="flex-1 p-4 md:p-8">
 
-        {/* Profile Section */}
+        Profile Section
         {activeTab === "profile" && (
 
           <div>
@@ -159,85 +172,25 @@ function AlumniDashboard() {
 
               </h3>
 
-              {profile && (
+              <div className="space-y-3">
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <p><strong>Name:</strong> {profile?.name}</p>
 
-                  <div>
-                    <p className="text-gray-500">
-                      Name
-                    </p>
+                <p><strong>Email:</strong> {profile?.email}</p>
 
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.name}
-                    </p>
-                  </div>
+                <p><strong>Course:</strong> {profile?.course_name}</p>
 
-                  <div>
-                    <p className="text-gray-500">
-                      Email
-                    </p>
+                <p><strong>Graduation Year:</strong> {profile?.graduation_year}</p>
 
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.email}
-                    </p>
-                  </div>
+                <p><strong>Company:</strong> {profile?.company}</p>
 
-                  <div>
+                <p><strong>Job Title:</strong> {profile?.job_title}</p>
 
-                    <p className="text-gray-500">
-                      Course
-                    </p>
+                <p><strong>Location:</strong> {profile?.location}</p>
 
-                    <p className="text-xl font-semibold">
-                      {profile.course_name}
-                    </p>
+              </div>
 
-                  </div>
 
-                  <div>
-                    <p className="text-gray-500">
-                      Graduation Year
-                    </p>
-
-                    <p className="text-lg md:text-xl font-semibold">
-                      {profile.graduation_year}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">
-                      Company
-                    </p>
-
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.company}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">
-                      Job Title
-                    </p>
-
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.job_title}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">
-                      Location
-                    </p>
-
-                    <p className="text-lg md:text-xl font-semibold break-words">
-                      {profile.location}
-                    </p>
-                  </div>
-
-                </div>
-
-              )}
 
             </div>
 
@@ -298,7 +251,7 @@ function AlumniDashboard() {
                   </p>
 
                   {/* Details */}
-                  <p className="text-gray-600 mb-1 break-words">
+                  <p className="text-black mb-1 break-words">
                     {a.company}
                   </p>
 
@@ -317,32 +270,21 @@ function AlumniDashboard() {
                     {a.graduation_year}
 
                   </p>
-
+                  <div className="mt-3">
+                    {a.is_approved ? (
+                      <span className="text-green-600 font-semibold">
+                        ✅ Verified
+                      </span>
+                    ) : (
+                      <span className="text-yellow-600 font-semibold">
+                        ⏳ Pending Verification
+                      </span>
+                    )}
+                  </div>
                 </div>
 
               ))}
 
-              <div className="mt-3">
-
-                {a.is_approved ? (
-
-                  <span className="text-green-600 font-semibold">
-
-                    ✅ Verified
-
-                  </span>
-
-                ) : (
-
-                  <span className="text-yellow-600 font-semibold">
-
-                    ⏳ Pending Verification
-
-                  </span>
-
-                )}
-
-              </div>
 
             </div>
 

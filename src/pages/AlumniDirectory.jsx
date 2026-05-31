@@ -35,29 +35,41 @@ function AlumniDirectory() {
   // Search Alumni
   const handleSearch = async () => {
 
-  try {
+    try {
 
-    const query =
-      new URLSearchParams(filters).toString();
+      const params = {};
 
-    const response = await API.get(
-      `/alumni/search?${query}`
-    );
+      if (filters.name.trim())
+        params.name = filters.name;
 
-    setAlumni(response.data);
+      if (filters.company.trim())
+        params.company = filters.company;
 
-  } catch (error) {
+      if (filters.course_name.trim())
+        params.course_name = filters.course_name;
 
-    console.error(
-      "SEARCH ERROR =>",
-      error
-    );
+      if (filters.graduation_year)
+        params.graduation_year =
+          filters.graduation_year;
 
-    toast.error(
-      "Search failed"
-    );
-  }
-};
+      const query =
+        new URLSearchParams(params)
+          .toString();
+
+      const res = await API.get(
+        `/alumni/search?${query}`
+      );
+
+      setAlumni(res.data);
+
+    } catch (error) {
+
+      console.error(
+        "SEARCH ERROR =>",
+        error
+      );
+    }
+  };
 
   useEffect(() => {
 
@@ -183,6 +195,7 @@ function AlumniDirectory() {
           <input
             type="text"
             placeholder="Name"
+            value={filters.name}
             className="border p-3 rounded-xl"
             onChange={(e) =>
               setFilters({
@@ -195,6 +208,7 @@ function AlumniDirectory() {
           <input
             type="text"
             placeholder="Company"
+            value={filters.company}
             className="border p-3 rounded-xl"
             onChange={(e) =>
               setFilters({
@@ -207,6 +221,7 @@ function AlumniDirectory() {
           <input
             type="text"
             placeholder="Course Name"
+            value={filters.course_name}
             className="border p-3 rounded-xl"
             onChange={(e) =>
               setFilters({
@@ -219,6 +234,7 @@ function AlumniDirectory() {
           <input
             type="number"
             placeholder="Graduation Year"
+            value={filters.graduation_year}
             className="border p-3 rounded-xl"
             onChange={(e) =>
               setFilters({
@@ -235,6 +251,22 @@ function AlumniDirectory() {
           className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition"
         >
           Search Alumni
+        </button>
+
+        <button
+          onClick={() => {
+            setFilters({
+              name: "",
+              company: "",
+              course_name: "",
+              graduation_year: "",
+            });
+
+            fetchAlumni();
+          }}
+          className="mt-6 ml-3 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl transition"
+        >
+          Reset
         </button>
 
       </div>
