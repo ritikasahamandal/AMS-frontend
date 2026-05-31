@@ -254,29 +254,10 @@ function LandingPage() {
 
             <p className="mt-6 text-base sm:text-lg md:text-2xl text-gray-700 leading-relaxed max-w-2xl">
 
-              Connect students, alumni and administrators
-              through one powerful platform.
+              A platform to manage Alumni data. Connects Alumni, 
+              Administrator and Students through one platform.
 
             </p>
-
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto">
-
-              <Link
-                to="/login"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold shadow-lg transition text-center"
-              >
-                Login →
-              </Link>
-
-              <Link
-                to="/register/alumni"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-2xl text-lg font-semibold transition text-center"
-              >
-                Register Now
-              </Link>
-
-            </div>
 
           </div>
 
@@ -284,7 +265,7 @@ function LandingPage() {
 
       </section>
 
-      {/* ================= FEATURES ================= */}
+      {/*  FEATURES  */}
       <section
         id="features"
         className="px-4 sm:px-8 lg:px-10 py-16 md:py-20 bg-white"
@@ -506,6 +487,7 @@ function LandingPage() {
 
             <p className="text-blue-100 text-sm md:text-base">
               Alumni Connected
+              (demo data for now)
             </p>
 
           </div>
@@ -518,11 +500,11 @@ function LandingPage() {
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              5+
+              Only for CSE department
             </h2>
 
             <p className="text-blue-100 text-sm md:text-base">
-              Departments
+              Department
             </p>
 
           </div>
@@ -540,6 +522,7 @@ function LandingPage() {
 
             <p className="text-blue-100 text-sm md:text-base">
               Batches
+              (demo data for now)
             </p>
 
           </div>
@@ -557,6 +540,7 @@ function LandingPage() {
 
             <p className="text-blue-100 text-sm md:text-base">
               Companies Represented
+              (demo data for now)
             </p>
 
           </div>
@@ -660,9 +644,15 @@ function LandingPage() {
               <li>
                 📍 Tezpur University, Assam
               </li>
+              <li>
+                Napaam, Tezpur, Sonitpur, Assam (India)
+              </li>
 
               <li>
-                ☎ +91 9876543210
+                ☎ +91-3712-273332
+              </li>
+              <li>
+                Web: http://www.tezu.ernet.in
               </li>
 
             </ul>
