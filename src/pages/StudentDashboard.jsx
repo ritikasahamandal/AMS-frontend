@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 
 function StudentDashboard() {
 
+  const [student, setStudent] = useState(null);
+
   const [alumni, setAlumni] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -12,6 +14,26 @@ function StudentDashboard() {
     course_name: "",
     graduation_year: "",
   });
+
+  const fetchStudent = async () => {
+
+    try {
+
+      const res = await API.get(
+        "/auth/me"
+      );
+
+      setStudent(res.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(
+        "Failed to load profile"
+      );
+    }
+  };
 
   // Fetch all alumni
   const fetchAlumni = async () => {
@@ -60,7 +82,7 @@ function StudentDashboard() {
 
   useEffect(() => {
 
-    fetchAlumni();
+    fetchStudent();
 
   }, []);
 
@@ -87,20 +109,16 @@ function StudentDashboard() {
 
         </h1>
 
-        {/* Navigation */}
-        <div className="flex flex-col sm:flex-row md:flex-col gap-4">
+        <div className="flex flex-col gap-4">
 
-          <div className="bg-blue-800 p-4 rounded-xl font-medium">
-
-            👥 Alumni Directory
-
-          </div>
-
-          <div className="bg-blue-800 p-4 rounded-xl font-medium">
-
-            🔍 Search Alumni
-
-          </div>
+          <button
+            onClick={() =>
+              window.location.href = "/"
+            }
+            className="bg-blue-800 hover:bg-blue-700 p-4 rounded-xl font-medium text-left"
+          >
+            🏠 Home
+          </button>
 
         </div>
 
@@ -126,167 +144,42 @@ function StudentDashboard() {
 
           </h2>
 
-          <p className="text-gray-600 text-base md:text-lg">
-
-            Explore and connect with alumni
-
-          </p>
-
         </div>
-
-        {/* Search Filters */}
-        <div className="bg-white p-6 md:p-8 rounded-2xl shadow mb-8">
-
-          <h3 className="text-2xl md:text-3xl font-semibold mb-6">
-
-            Search Alumni
-
-          </h3>
-
-          {/* Inputs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-            <input
-              type="text"
-              placeholder="Name"
-              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  name: e.target.value,
-                })
-              }
-            />
-
-            <input
-              type="text"
-              placeholder="Company"
-              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  company: e.target.value,
-                })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Course Name"
-              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  course_name: e.target.value,
-                })
-              }
-            />
-
-            <input
-              type="number"
-              placeholder="Graduation Year"
-              className="border p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-400"
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  graduation_year: e.target.value,
-                })
-              }
-            />
-
-
-          </div>
-
-          {/* Search Button */}
-          <button
-            onClick={handleSearch}
-            className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition"
-          >
-            Search
-          </button>
-
-        </div>
-
-        {/* Alumni Directory */}
         <div className="bg-white p-6 md:p-8 rounded-2xl shadow">
 
-          <h3 className="text-2xl md:text-3xl font-semibold mb-8">
+          <h3 className="text-2xl font-bold mb-6">
 
-            Alumni Directory
+            My Profile
 
           </h3>
 
-          {/* Alumni Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="space-y-4">
 
-            {alumni.map((a) => (
+            <p>
+              <strong>Name:</strong>{" "}
+              {student?.name}
+            </p>
 
-              <div
-                key={a.id}
-                className="bg-gray-50 rounded-2xl p-6 hover:shadow-xl transition"
-              >
+            <p>
+              <strong>Email:</strong>{" "}
+              {student?.email}
+            </p>
 
-                {/* Avatar */}
-                <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-3xl mb-5">
-
-                  🎓
-
-                </div>
-
-                {/* Name */}
-                <h4 className="text-xl md:text-2xl font-bold mb-2 break-words">
-
-                  {a.name}
-
-                </h4>
-                <p className="text-blue-600 font-medium mb-2 break-words">
-                  {a.course_name}
-                </p>
-
-                {/* Details */}
-                <p className="text-gray-600 mb-1 break-words">
-                  {a.company}
-                </p>
-
-                <p className="text-gray-600 mb-1 break-words">
-                  {a.job_title}
-                </p>
-
-                <p className="text-gray-600 mb-1 break-words">
-                  {a.location}
-                </p>
-
-                <p className="text-gray-600">
-
-                  Graduation Year:
-                  {" "}
-                  {a.graduation_year}
-
-                </p>
-
-              </div>
-
-            ))}
-            <div className="mt-3">
-
-              {a.is_approved ? (
-
-                <span className="text-green-600 font-semibold">
-                  ✅ Verified
-                </span>
-
-              ) : (
-
-                <span className="text-yellow-600 font-semibold">
-                  ⏳ Pending Verification
-                </span>
-
-              )}
-
-            </div>
+            <p>
+              <strong>Role:</strong>{" "}
+              {student?.role}
+            </p>
 
           </div>
 
         </div>
+
+
+
+
+
+
+
 
       </div>
 
