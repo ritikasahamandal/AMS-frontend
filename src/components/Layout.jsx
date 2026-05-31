@@ -15,6 +15,8 @@ function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] =
     useState(false);
 
+  const navigate = useNavigate();
+
   return (
 
     <div className="flex min-h-screen bg-gray-100">
@@ -137,11 +139,16 @@ function Layout({ children }) {
 
           {/* Logout */}
           <button
+            onClick={() => {
+
+              localStorage.clear();
+
+              navigate("/login");
+
+            }}
             className="mt-auto bg-red-500 hover:bg-red-600 py-3 rounded-xl font-semibold transition"
           >
-
             Logout
-
           </button>
 
         </div>

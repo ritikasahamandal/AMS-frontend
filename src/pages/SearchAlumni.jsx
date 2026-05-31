@@ -7,25 +7,49 @@ function SearchAlumni() {
   const [filters, setFilters] = useState({
     name: "",
     company: "",
-    year: "",
-    department: "",
+    course_name: "",
+    graduation_year: "",
   });
 
   const [results, setResults] = useState([]);
 
   const handleSearch = async () => {
-    try {
 
-      const query = new URLSearchParams(filters).toString();
+  try {
 
-      const res = await API.get(`/alumni/search?${query}`);
+    const params = {};
 
-      setResults(res.data);
+    if (filters.name.trim())
+      params.name = filters.name;
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    if (filters.company.trim())
+      params.company = filters.company;
+
+    if (filters.course_name.trim())
+      params.course_name = filters.course_name;
+
+    if (filters.graduation_year)
+      params.graduation_year =
+        filters.graduation_year;
+
+    const query =
+      new URLSearchParams(params)
+        .toString();
+
+    const res = await API.get(
+      `/alumni/search?${query}`
+    );
+
+    setResults(res.data);
+
+  } catch (error) {
+
+    console.error(
+      "SEARCH ERROR =>",
+      error
+    );
+  }
+};
 
   return (
     <Layout>
@@ -42,6 +66,7 @@ function SearchAlumni() {
           <input
             type="text"
             placeholder="Search by name"
+            value={filters.name}
             className="border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({ ...filters, name: e.target.value })
@@ -51,6 +76,7 @@ function SearchAlumni() {
           <input
             type="text"
             placeholder="Company"
+            value={filters.company}
             className="border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({ ...filters, company: e.target.value })
@@ -60,18 +86,23 @@ function SearchAlumni() {
           <input
             type="number"
             placeholder="Graduation Year"
+            value={filters.graduation_year}
             className="border p-3 rounded-lg"
             onChange={(e) =>
-              setFilters({ ...filters, year: e.target.value })
+              setFilters({ ...filters, graduation_year: e.target.value })
             }
           />
 
           <input
             type="text"
-            placeholder="Department"
+            placeholder="Course Name"
+            value={filters.course_name}
             className="border p-3 rounded-lg"
             onChange={(e) =>
-              setFilters({ ...filters, department: e.target.value })
+              setFilters({
+                ...filters,
+                course_name: e.target.value,
+              })
             }
           />
 
@@ -92,6 +123,9 @@ function SearchAlumni() {
           <h2 className="text-xl font-semibold">
             Results
           </h2>
+          <p className="text-red-500">
+            Total Results: {results.length}
+          </p>
         </div>
 
         <table className="w-full">
@@ -100,9 +134,9 @@ function SearchAlumni() {
             <tr className="bg-blue-100 text-left">
               <th className="p-4">Name</th>
               <th className="p-4">Email</th>
-              <th className="p-4">Department</th>
+              <th className="p-4">Course</th>
               <th className="p-4">Company</th>
-              <th className="p-4">Year</th>
+              <th className="p-4">Graduation Year</th>
             </tr>
           </thead>
 
@@ -115,7 +149,7 @@ function SearchAlumni() {
                 >
                   <td className="p-4">{alumni.name}</td>
                   <td className="p-4">{alumni.email}</td>
-                  <td className="p-4">{alumni.department}</td>
+                  <td className="p-4">{alumni.course_name}</td>
                   <td className="p-4">{alumni.company}</td>
                   <td className="p-4">
                     {alumni.graduation_year}
