@@ -186,7 +186,7 @@ function AdminDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
         {/* Total Users */}
         <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
@@ -257,12 +257,12 @@ function AdminDashboard() {
           Search Alumni
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 
           <input
             type="text"
             placeholder="Name"
-            className="border p-3 rounded-lg"
+            className="w-full border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({
                 ...filters,
@@ -274,7 +274,7 @@ function AdminDashboard() {
           <input
             type="text"
             placeholder="Company"
-            className="border p-3 rounded-lg"
+            className="w-full border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({
                 ...filters,
@@ -286,7 +286,7 @@ function AdminDashboard() {
           <input
             type="text"
             placeholder="Course Name"
-            className="border p-3 rounded-lg"
+            className="w-full border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({
                 ...filters,
@@ -298,7 +298,7 @@ function AdminDashboard() {
           <input
             type="number"
             placeholder="Graduation Year"
-            className="border p-3 rounded-lg"
+            className="w-full border p-3 rounded-lg"
             onChange={(e) =>
               setFilters({
                 ...filters,
@@ -342,9 +342,9 @@ function AdminDashboard() {
 
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
 
-          <table className="min-w-full">
+         <table className="min-w-[900px] w-full">
 
             <thead>
 
@@ -367,6 +367,10 @@ function AdminDashboard() {
                 </th>
 
                 <th className="p-4">
+                  Grad_Year
+                </th>
+
+                <th className="p-4">
                   Verification
                 </th>
 
@@ -381,6 +385,7 @@ function AdminDashboard() {
             <tbody>
 
               {users
+                .filter((u) => u.role === "alumni")
                 .map((u) => (
 
                   <tr
@@ -427,6 +432,10 @@ function AdminDashboard() {
 
                       </select>
 
+                    </td>
+
+                    <td className="p-4">
+                      {u.graduation_year}
                     </td>
 
                     {/* Verify */}
@@ -486,9 +495,10 @@ function AdminDashboard() {
       </div>
 
       {/* Mobile Cards */}
-      <div className="lg:hidden space-y-5">
+      <div className="lg:hidden grid grid-cols-1 gap-5">
 
         {users
+          .filter((u) => u.role === "alumni")
           .map((u) => (
 
             <div
@@ -504,7 +514,7 @@ function AdminDashboard() {
               </h2>
 
               {/* Email */}
-              <p className="text-gray-600 text-sm break-words mb-4">
+              <p className="text-gray-600 text-sm break-all mb-4">
 
                 {u.email}
 

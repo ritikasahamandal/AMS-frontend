@@ -638,7 +638,7 @@ function LandingPage() {
             <ul className="space-y-3 text-gray-400 text-sm md:text-base break-words">
 
               <li>
-                📧 support@alumnims.com
+                📧 alumni.system2026@gmail.com
               </li>
 
               <li>
